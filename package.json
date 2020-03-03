@@ -1,0 +1,20 @@
+{
+  "name": "npsr",
+  "version": "0.0.1",
+  "description": "node package script runner",
+  "main": "index.js",
+  "scripts": {
+  },
+  "keywords": [
+    "run",
+    "runner",
+    "package",
+    "scripts",
+    "node-scripts",
+    "script-runner",
+    "node-runner",
+    "run-script"
+  ],
+  "author": "",
+  "license": "ISC"
+}
