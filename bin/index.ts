@@ -32,22 +32,58 @@ import {promisify} from "util";
 
 // promisify our readFile
 const readFile = promisify(fs.readFile);
+
 // get current working directory where command is run
 const cwd = process.cwd();
+
+// parsing arguments in args
+const args = [];
+process.argv.forEach((el, i) => {
+    if (i > 1)
+        // we only adding the args passed by user only
+        args.push(el.toLowerCase())
+});
+
+// various color codes without using libraries
+const reset = "\x1b[0m";
+const red = "\x1b[31m";
+const green = "\x1b[32m";
+const yellow = "\x1b[33m";
+const blue = "\x1b[34m";
+const magenta = "\x1b[35m";
+const cyan = "\x1b[36m";
+const white = "\x1b[37m";
 
 // self invoking async function
 (async () => {
     try {
-        const pkg = JSON.parse(await readFile(resolve(cwd, 'package.json'), "UTF-8"));
-        const scripts = pkg.scripts;
+        // check if there are any arguments
+        if (args[0] === undefined)
+            help();
+        else {
+            const pkg = JSON.parse(await readFile(resolve(cwd, 'package.json'), "UTF-8"));
+            const scripts = pkg.scripts;
 
-        // check if scripts exists or not
-        if (scripts === undefined || Object.keys(scripts).length === 0) {
-            throw Error("no scripts are in package.json file")
-        } else
-            console.log(scripts)
+            // check if scripts exists or not
+            if (scripts === undefined || Object.keys(scripts).length === 0) {
+                throw Error("no scripts are in package.json file")
+            } else
+                console.log(scripts)
+        }
     } catch (e) {
         // we will log any error directly on user terminal
-        console.log(e);
+        console.log(red + e + reset);
     }
 })();
+
+/**
+ * used to display help menu
+ */
+function help() {
+    console.log("");
+    console.log(cyan + " option " + yellow +  "|" + cyan + " description" + reset);
+    console.log("");
+    console.log(" * " + yellow + "|" + reset + " script name " + green +"e.g ns build " + reset);
+    console.log(" -h " + yellow + "|" + reset + " used to display all available options ");
+    console.log(" -v " + yellow + "|" + reset + " version of `npsr` package ");
+}

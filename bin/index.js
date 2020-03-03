@@ -72,16 +72,36 @@ var util_1 = require("util");
 var readFile = util_1.promisify(fs_1.default.readFile);
 // get current working directory where command is run
 var cwd = process.cwd();
+// parsing arguments in args
+var args = [];
+process.argv.forEach(function (el, i) {
+    if (i > 1)
+        // we only adding the args passed by user only
+        args.push(el.toLowerCase());
+});
+// various color codes without using libraries
+var reset = "\x1b[0m";
+var red = "\x1b[31m";
+var green = "\x1b[32m";
+var yellow = "\x1b[33m";
+var blue = "\x1b[34m";
+var magenta = "\x1b[35m";
+var cyan = "\x1b[36m";
+var white = "\x1b[37m";
 // self invoking async function
 (function () { return __awaiter(void 0, void 0, void 0, function () {
     var pkg, _a, _b, scripts, e_1;
     return __generator(this, function (_c) {
         switch (_c.label) {
             case 0:
-                _c.trys.push([0, 2, , 3]);
+                _c.trys.push([0, 4, , 5]);
+                if (!(args[0] === undefined)) return [3 /*break*/, 1];
+                help();
+                return [3 /*break*/, 3];
+            case 1:
                 _b = (_a = JSON).parse;
                 return [4 /*yield*/, readFile(path_1.resolve(cwd, 'package.json'), "UTF-8")];
-            case 1:
+            case 2:
                 pkg = _b.apply(_a, [_c.sent()]);
                 scripts = pkg.scripts;
                 // check if scripts exists or not
@@ -90,13 +110,25 @@ var cwd = process.cwd();
                 }
                 else
                     console.log(scripts);
-                return [3 /*break*/, 3];
-            case 2:
+                _c.label = 3;
+            case 3: return [3 /*break*/, 5];
+            case 4:
                 e_1 = _c.sent();
                 // we will log any error directly on user terminal
-                console.log(e_1);
-                return [3 /*break*/, 3];
-            case 3: return [2 /*return*/];
+                console.log(red + e_1 + reset);
+                return [3 /*break*/, 5];
+            case 5: return [2 /*return*/];
         }
     });
 }); })();
+/**
+ * used to display help menu
+ */
+function help() {
+    console.log("");
+    console.log(cyan + " option " + yellow + "|" + cyan + " description" + reset);
+    console.log("");
+    console.log(" * " + yellow + "|" + reset + " script name " + green + "e.g ns build " + reset);
+    console.log(" -h " + yellow + "|" + reset + " used to display all available options ");
+    console.log(" -v " + yellow + "|" + reset + " version of `npsr` package ");
+}
