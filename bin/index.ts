@@ -27,11 +27,14 @@ OR PERFORMANCE OF THIS SOFTWARE.
 */
 
 import {resolve} from "path"
-import fs from "fs";
+import fs, {readFileSync} from "fs";
 import {promisify} from "util";
 
 // promisify our readFile
 const readFile = promisify(fs.readFile);
+
+// reading npsr package.json file
+const pckjson = JSON.parse(readFileSync(resolve(__dirname, "..", "package.json"), 'utf-8'));
 
 // get current working directory where command is run
 const cwd = process.cwd();
@@ -61,14 +64,38 @@ const white = "\x1b[37m";
         if (args[0] === undefined)
             help();
         else {
-            const pkg = JSON.parse(await readFile(resolve(cwd, 'package.json'), "UTF-8"));
-            const scripts = pkg.scripts;
+            const arg = args[0];
+            switch (arg) {
+                // help menu
+                case "-h" : {
+                    help();
+                    break
+                }
+                // version of npsr
+                case "-v": {
+                    console.log(cyan + "Version : " + pckjson.version + reset);
+                    break
+                }
+                // anything else will be matched for script
+                default: {
+                    // get cwd package.json file
+                    const pkg = JSON.parse(await readFile(resolve(cwd, 'package.json'), "UTF-8"));
+                    // extract scripts property
+                    const scripts = pkg.scripts;
 
-            // check if scripts exists or not
-            if (scripts === undefined || Object.keys(scripts).length === 0) {
-                throw Error("no scripts are in package.json file")
-            } else
-                console.log(scripts)
+                    // check if scripts exists or not
+                    if (scripts === undefined || Object.keys(scripts).length === 0) {
+                        throw Error("no scripts are in package.json file")
+                    } else {
+                        // find & run the script
+                        const keys = Object.keys(scripts);
+                        const check = keys.includes(arg);
+                        if (!check)
+                            // script not exists, throw error
+                            throw Error(`given script ${arg} not exists`)
+                    }
+                }
+            }
         }
     } catch (e) {
         // we will log any error directly on user terminal
@@ -81,9 +108,9 @@ const white = "\x1b[37m";
  */
 function help() {
     console.log("");
-    console.log(cyan + " option " + yellow +  "|" + cyan + " description" + reset);
+    console.log(cyan + " option " + yellow + "|" + cyan + " description" + reset);
     console.log("");
-    console.log(" * " + yellow + "|" + reset + " script name " + green +"e.g ns build " + reset);
+    console.log(" * " + yellow + "|" + reset + " script name " + green + "e.g ns build " + reset);
     console.log(" -h " + yellow + "|" + reset + " used to display all available options ");
     console.log(" -v " + yellow + "|" + reset + " version of `npsr` package ");
 }
