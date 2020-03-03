@@ -68,23 +68,33 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var path_1 = require("path");
 var fs_1 = __importDefault(require("fs"));
 var util_1 = require("util");
+// promisify our readFile
 var readFile = util_1.promisify(fs_1.default.readFile);
+// get current working directory where command is run
 var cwd = process.cwd();
+// self invoking async function
 (function () { return __awaiter(void 0, void 0, void 0, function () {
-    var pkg, e_1;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
+    var pkg, _a, _b, scripts, e_1;
+    return __generator(this, function (_c) {
+        switch (_c.label) {
             case 0:
-                _a.trys.push([0, 2, , 3]);
+                _c.trys.push([0, 2, , 3]);
+                _b = (_a = JSON).parse;
                 return [4 /*yield*/, readFile(path_1.resolve(cwd, 'package.json'), "UTF-8")];
             case 1:
-                pkg = _a.sent();
-                console.log(pkg);
+                pkg = _b.apply(_a, [_c.sent()]);
+                scripts = pkg.scripts;
+                // check if scripts exists or not
+                if (scripts === undefined || Object.keys(scripts).length === 0) {
+                    throw Error("no scripts are in package.json file");
+                }
+                else
+                    console.log(scripts);
                 return [3 /*break*/, 3];
             case 2:
-                e_1 = _a.sent();
+                e_1 = _c.sent();
+                // we will log any error directly on user terminal
                 console.log(e_1);
-                console.log("package json not found");
                 return [3 /*break*/, 3];
             case 3: return [2 /*return*/];
         }

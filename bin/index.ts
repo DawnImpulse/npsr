@@ -30,15 +30,24 @@ import {resolve} from "path"
 import fs from "fs";
 import {promisify} from "util";
 
+// promisify our readFile
 const readFile = promisify(fs.readFile);
+// get current working directory where command is run
 const cwd = process.cwd();
 
+// self invoking async function
 (async () => {
     try {
-        const pkg = await readFile(resolve(cwd, 'package.json'), "UTF-8");
-        console.log(pkg)
+        const pkg = JSON.parse(await readFile(resolve(cwd, 'package.json'), "UTF-8"));
+        const scripts = pkg.scripts;
+
+        // check if scripts exists or not
+        if (scripts === undefined || Object.keys(scripts).length === 0) {
+            throw Error("no scripts are in package.json file")
+        } else
+            console.log(scripts)
     } catch (e) {
+        // we will log any error directly on user terminal
         console.log(e);
-        console.log("package json not found")
     }
 })();
