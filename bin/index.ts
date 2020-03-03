@@ -29,6 +29,7 @@ OR PERFORMANCE OF THIS SOFTWARE.
 import {resolve} from "path"
 import fs, {readFileSync} from "fs";
 import {promisify} from "util";
+import {spawn} from "child_process";
 
 // promisify our readFile
 const readFile = promisify(fs.readFile);
@@ -52,8 +53,6 @@ const reset = "\x1b[0m";
 const red = "\x1b[31m";
 const green = "\x1b[32m";
 const yellow = "\x1b[33m";
-const blue = "\x1b[34m";
-const magenta = "\x1b[35m";
 const cyan = "\x1b[36m";
 const white = "\x1b[37m";
 
@@ -92,7 +91,9 @@ const white = "\x1b[37m";
                         const check = keys.includes(arg);
                         if (!check)
                             // script not exists, throw error
-                            throw Error(`given script ${arg} not exists`)
+                            throw Error(`given script ${arg} not exists`);
+                        else
+                            command(scripts[arg])
                     }
                 }
             }
@@ -102,6 +103,23 @@ const white = "\x1b[37m";
         console.log(red + e + reset);
     }
 })();
+
+/**
+ * spawn a new process
+ */
+function command(cmd) {
+    console.log(white + "Running command " + cyan + cmd + reset);
+    const child = spawn(cmd, {stdio: 'inherit', shell: true});
+    child.on('exit', (code) => {
+        return
+    });
+
+    child.on('error', err => {
+        console.log(red + err + reset);
+        return
+    })
+
+}
 
 /**
  * used to display help menu

@@ -61,15 +61,22 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    result["default"] = mod;
+    return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var path_1 = require("path");
-var fs_1 = __importDefault(require("fs"));
+var fs_1 = __importStar(require("fs"));
 var util_1 = require("util");
+var child_process_1 = require("child_process");
 // promisify our readFile
 var readFile = util_1.promisify(fs_1.default.readFile);
+// reading npsr package.json file
+var pckjson = JSON.parse(fs_1.readFileSync(path_1.resolve(__dirname, "..", "package.json"), 'utf-8'));
 // get current working directory where command is run
 var cwd = process.cwd();
 // parsing arguments in args
@@ -90,37 +97,78 @@ var cyan = "\x1b[36m";
 var white = "\x1b[37m";
 // self invoking async function
 (function () { return __awaiter(void 0, void 0, void 0, function () {
-    var pkg, _a, _b, scripts, e_1;
-    return __generator(this, function (_c) {
-        switch (_c.label) {
+    var arg, _a, pkg, _b, _c, scripts, keys, check, e_1;
+    return __generator(this, function (_d) {
+        switch (_d.label) {
             case 0:
-                _c.trys.push([0, 4, , 5]);
+                _d.trys.push([0, 7, , 8]);
                 if (!(args[0] === undefined)) return [3 /*break*/, 1];
                 help();
-                return [3 /*break*/, 3];
+                return [3 /*break*/, 6];
             case 1:
-                _b = (_a = JSON).parse;
-                return [4 /*yield*/, readFile(path_1.resolve(cwd, 'package.json'), "UTF-8")];
+                arg = args[0];
+                _a = arg;
+                switch (_a) {
+                    case "-h": return [3 /*break*/, 2];
+                    case "-v": return [3 /*break*/, 3];
+                }
+                return [3 /*break*/, 4];
             case 2:
-                pkg = _b.apply(_a, [_c.sent()]);
+                {
+                    help();
+                    return [3 /*break*/, 6];
+                }
+                _d.label = 3;
+            case 3:
+                {
+                    console.log(cyan + "Version : " + pckjson.version + reset);
+                    return [3 /*break*/, 6];
+                }
+                _d.label = 4;
+            case 4:
+                _c = (_b = JSON).parse;
+                return [4 /*yield*/, readFile(path_1.resolve(cwd, 'package.json'), "UTF-8")];
+            case 5:
+                pkg = _c.apply(_b, [_d.sent()]);
                 scripts = pkg.scripts;
                 // check if scripts exists or not
                 if (scripts === undefined || Object.keys(scripts).length === 0) {
                     throw Error("no scripts are in package.json file");
                 }
-                else
-                    console.log(scripts);
-                _c.label = 3;
-            case 3: return [3 /*break*/, 5];
-            case 4:
-                e_1 = _c.sent();
+                else {
+                    keys = Object.keys(scripts);
+                    check = keys.includes(arg);
+                    if (!check)
+                        // script not exists, throw error
+                        throw Error("given script " + arg + " not exists");
+                    else
+                        command(scripts[arg]);
+                }
+                _d.label = 6;
+            case 6: return [3 /*break*/, 8];
+            case 7:
+                e_1 = _d.sent();
                 // we will log any error directly on user terminal
                 console.log(red + e_1 + reset);
-                return [3 /*break*/, 5];
-            case 5: return [2 /*return*/];
+                return [3 /*break*/, 8];
+            case 8: return [2 /*return*/];
         }
     });
 }); })();
+/**
+ * spawn a new process
+ */
+function command(cmd) {
+    console.log(white + "Running command " + cyan + cmd + reset);
+    var child = child_process_1.spawn(cmd, { stdio: 'inherit', shell: true });
+    child.on('exit', function (code) {
+        return;
+    });
+    child.on('error', function (err) {
+        console.log(red + err + reset);
+        return;
+    });
+}
 /**
  * used to display help menu
  */

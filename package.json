@@ -1,6 +1,6 @@
 {
   "name": "npsr",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "node package script runner",
   "bin": {
     "npsr": "bin/index.js",
