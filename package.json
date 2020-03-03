@@ -4,6 +4,7 @@
   "description": "node package script runner",
   "main": "index.js",
   "scripts": {
+    "build": "tsc"
   },
   "keywords": [
     "run",
@@ -16,5 +17,10 @@
     "run-script"
   ],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^13.7.7",
+    "husky": "^4.2.3",
+    "typescript": "^3.8.3"
+  }
 }
