@@ -2,7 +2,10 @@
   "name": "npsr",
   "version": "0.0.1",
   "description": "node package script runner",
-  "main": "index.js",
+  "bin": {
+    "npsr": "bin/index.js",
+    "ns": "bin/index.js"
+  },
   "scripts": {
     "build": "tsc"
   },

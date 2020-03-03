@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 /*
 
 ISC License
@@ -23,7 +25,20 @@ OR PERFORMANCE OF THIS SOFTWARE.
 @note Updates :
 
 */
-import {resolve} from "path"
-import {readdirSync} from "fs";
 
+import {resolve} from "path"
+import fs from "fs";
+import {promisify} from "util";
+
+const readFile = promisify(fs.readFile);
 const cwd = process.cwd();
+
+(async () => {
+    try {
+        const pkg = await readFile(resolve(cwd, 'package.json'), "UTF-8");
+        console.log(pkg)
+    } catch (e) {
+        console.log(e);
+        console.log("package json not found")
+    }
+})();
