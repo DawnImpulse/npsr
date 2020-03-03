@@ -91,8 +91,6 @@ var reset = "\x1b[0m";
 var red = "\x1b[31m";
 var green = "\x1b[32m";
 var yellow = "\x1b[33m";
-var blue = "\x1b[34m";
-var magenta = "\x1b[35m";
 var cyan = "\x1b[36m";
 var white = "\x1b[37m";
 // self invoking async function

@@ -1,17 +1,34 @@
 # Node Package Script Runner
-The package is used to run your package.json scripts easily using either `ns` or `npsr` command without writing `npm run` everytime
+[![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg)](https://conventionalcommits.org)  
+**npsr** is used to run your package.json scripts easily using either `ns` or `npsr` command without writing `npm run` everytime
 
-E.g.
-Suppose you have two scripts in your package.json namely **build** & **coverage**. You can run them directly with either of the below commands
+### Installation
+Install the package as global module
+```
+npm i -g npsr
+// or
+yarn global add npsr
+```
+### Usage
+The main purpose of this package is to make it very friendly to use. In your project root folder run your script (***e.g. build***) like -
 ```
 ns build 
 ```
+**or**
 ```
-npsr coverage
+npsr build
 ```
 
-### Release
-The package is expected to be released in early March '2020
+> both **npsr** & **ns** are interchangeable
+
+
+### Options  
+  
+| Option | Description |  
+|--|--|  
+| * | your any script name. `ns test:coverage`|
+| -h | used to display all available options. `ns -h` |  
+| -v | version of `npsr` package. `ns -v` |  
 
 
 ### Contact  
@@ -23,6 +40,8 @@ The package is expected to be released in early March '2020
   
 ### License (ISC)  
 ~~~~  
+  
+```
 ISC Licence
 
 Copyright 2020 Saksham (DawnImpulse)
@@ -34,5 +53,6 @@ THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH RE
 IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
 INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS,
 WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISIN
+```
 ~~~~
 > Written with [StackEdit](https://stackedit.io/).

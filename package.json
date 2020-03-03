@@ -2,12 +2,27 @@
   "name": "npsr",
   "version": "1.0.0",
   "description": "node package script runner",
+  "files": [
+    "LICENSE.txt",
+    "README.md",
+    "package.json",
+    "bin/index.js"
+  ],
   "bin": {
     "npsr": "bin/index.js",
     "ns": "bin/index.js"
   },
   "scripts": {
     "build": "tsc"
+  },
+  "devDependencies": {
+    "@types/node": "13.7.7",
+    "husky": "4.2.3",
+    "typescript": "3.8.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dawnimpulse/npsr.git"
   },
   "keywords": [
     "run",
@@ -19,11 +34,10 @@
     "node-runner",
     "run-script"
   ],
-  "author": "",
+  "author": "DawnImpulse",
   "license": "ISC",
-  "devDependencies": {
-    "@types/node": "^13.7.7",
-    "husky": "^4.2.3",
-    "typescript": "^3.8.3"
-  }
+  "bugs": {
+    "url": "https://github.com/dawnimpulse/npsr/issues"
+  },
+  "homepage": "https://github.com/dawnimpulse/npsr#readme"
 }
