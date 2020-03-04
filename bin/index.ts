@@ -23,7 +23,7 @@ OR PERFORMANCE OF THIS SOFTWARE.
      
 @note Created on 2020-03-03 by Saksham
 @note Updates :
-
+    Saksham - 2019 03 04 - master - adding local .bin folder to path
 */
 
 import {resolve} from "path"
@@ -108,8 +108,20 @@ const white = "\x1b[37m";
  * spawn a new process
  */
 function command(cmd) {
+    let env = process.env;
+    // resolving path
+    let path = resolveInternalPath(process.env.PATH);
+    env["PATH"] = path;
+
     console.log(white + "Running command " + cyan + cmd + reset);
-    const child = spawn(cmd, {stdio: 'inherit', shell: true});
+
+    // running command
+    const child = spawn(cmd, {
+        cwd,
+        stdio: 'inherit',
+        shell: true,
+        env
+    });
     child.on('exit', (code) => {
         return
     });
@@ -131,4 +143,19 @@ function help() {
     console.log(" * " + yellow + "|" + reset + " script name " + green + "e.g ns build " + reset);
     console.log(" -h " + yellow + "|" + reset + " used to display all available options ");
     console.log(" -v " + yellow + "|" + reset + " version of `npsr` package ");
+}
+
+/**
+ * resolve bin path & return updated PATH
+ *
+ * @param path
+ * @return path
+ */
+function resolveInternalPath(path) {
+    try {
+        const bin = resolve(cwd, "node_modules", ".bin");
+        return path += `;${bin}`
+    } catch (e) {
+        return path
+    }
 }

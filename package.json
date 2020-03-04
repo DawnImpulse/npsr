@@ -1,6 +1,6 @@
 {
   "name": "npsr",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "node package script runner",
   "files": [
     "LICENSE.txt",

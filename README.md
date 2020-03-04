@@ -1,5 +1,5 @@
 # Node Package Script Runner
-[![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg)](https://conventionalcommits.org)  
+[![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg)](https://conventionalcommits.org) ![npsr](https://img.shields.io/npm/dt/npsr.svg)  
 **npsr** is used to run your package.json scripts easily using either `ns` or `npsr` command without writing `npm run` everytime
 
 ### Installation
